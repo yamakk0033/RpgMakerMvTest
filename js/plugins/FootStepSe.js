@@ -17,11 +17,11 @@
     // volume : 音量(0...100)
     // pitch  : ピッチ(50...150)
     // pan    : 位相(-100...100)
-    var always  = { name:"walk-high-heele-s1_01",  volume:90, pitch:100, pan:0, pos:1 };
-    var always2 = { name:"walk-leather-shoes1_01", volume:90, pitch:100, pan:0, pos:10 };
+    var always  = { name:"walk-high-heele-s1_01",  volume:90, pitch:100, pan:0 };
+    var always2 = { name:"walk-leather-shoes1_01", volume:90, pitch:100, pan:0 };
 
 
-    var list = { "walk-high-heele-s1_01":1, "walk-leather-shoes1_01":10 };
+    var posList = { "walk-high-heele-s1_01":1, "walk-leather-shoes1_01":10 };
 
     // 画像ごとに足音を設定
     var eventIamgeList = { "Male_Zombies_Gore":always, "Male Heroes":always2 };
@@ -37,9 +37,9 @@
     Game_Interpreter.prototype.pluginCommand = function(command, args) {
         var result = _Game_Interpreter_pluginCommand.call(this, command, args);
 
-        if (command === 'FootStepSound')
+        switch(command)
         {
-            isFootStepSe = (args[0].toLowerCase() === 'true');
+            case "FootStepSound": isFootStepSe = (args[0].toLowerCase() === 'true'); break;
         }
 
         return result;
@@ -81,7 +81,7 @@
             var pw = this.patternWidth();
             var sx = (this.characterBlockX() + this.characterPatternX()) * pw;
 
-            if(prev_sx !== pw * state.pos && prev_sx !== sx)
+            if(prev_sx !== pw * posList[state.name] && prev_sx !== sx)
             {
                 AudioManager.playSe(state);
             }
